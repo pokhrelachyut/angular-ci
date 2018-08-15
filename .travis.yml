@@ -6,6 +6,17 @@ language: node_js
 services:
   - docker
 
-before_install:
-  - docker build -t darmagedon/angular-ci .
+branches:
+  only:
+    - dev
+    - master
+
+before_script:
+  - echo "Starting"
+
+script:
+  - docker build . -t darmagedon/angular-ci:latest
+
+after_success:
+  - echo "Done"
 
