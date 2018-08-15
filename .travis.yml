@@ -22,8 +22,10 @@ after_success:
       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD;
       docker tag darmagedon/angular-ci:latest darmagedon/angular-ci:dev;
       docker push darmagedon/angular-ci:dev;
+    fi
 
   - if [ ${BRANCH} = "master" ]; then
       docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD;
       docker tag darmagedon/angular-ci:latest darmagedon/angular-ci:stable;
       docker push darmagedon/angular-ci:stable;
+    fi
