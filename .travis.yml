@@ -1,0 +1,22 @@
+---
+sudo: required
+
+language: node_js
+
+services:
+  - docker
+
+branches:
+  only:
+    - dev
+    - master
+
+before_script:
+  - echo "Starting"
+
+script:
+  - docker build . -t darmagedon/angular-ci:latest
+
+after_success:
+  - echo "Done"
+
