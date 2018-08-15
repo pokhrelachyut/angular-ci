@@ -1,8 +1,6 @@
 ---
 sudo: required
 
-language: node_js
-
 services:
   - docker
 
@@ -18,5 +16,16 @@ script:
   - docker build . -t darmagedon/angular-ci:latest
 
 after_success:
-  - echo "Done"
+  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+  - echo ${BRANCH}
+  - if [ ${BRANCH} = "dev" ]; then
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD;
+      docker tag darmagedon/angular-ci:latest darmagedon/angular-ci:dev;
+      docker push darmagedon/angular-ci:dev;
+    fi
 
+  - if [ ${BRANCH} = "master" ]; then
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD;
+      docker tag darmagedon/angular-ci:latest darmagedon/angular-ci:stable;
+      docker push darmagedon/angular-ci:stable;
+    fi
